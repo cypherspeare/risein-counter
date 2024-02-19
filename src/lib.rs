@@ -38,7 +38,12 @@ pub fn process_instruction(
             counter_account.counter += args.value;
         }
         CounterInstructions::Decrement(args) => {
-            counter_account.counter -= args.value;
+            let non_zero_value = if counter_account.counter < args.value {
+                counter_account.counter
+            } else {
+                args.value
+            };
+            counter_account.counter -= non_zero_value;
         }
         CounterInstructions::Reset => {
             counter_account.counter = 0;
